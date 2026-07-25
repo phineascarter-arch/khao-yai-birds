@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>考艾鳥類全名錄 2026/4-7 · Khao Yai Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,500;1,500;1,600&family=LXGW+WenKai+TC:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root{
+    --forest-deep:#0c1c14;
+    --forest-mid:#152b1e;
+    --canopy:#20402a;
+    --canopy-line: rgba(207,159,63,0.18);
+    --mist:#eef1e4;
+    --text-soft:#c7d2bd;
+    --text-dim:#8a9784;
+    --ivory:#ecdcb2;
+    --gold:#cf9f3f;
+    --gold-bright:#e8c468;
+    --lock-gray:#5a6559;
+    --shadow: 0 18px 40px -20px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--forest-deep);
+    color:var(--mist);
+    font-family:'LXGW WenKai TC', serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .latin{font-family:'EB Garamond', serif; font-style:italic; color:var(--gold-bright);}
+  a{color:inherit;}
+  button{font-family:'LXGW WenKai TC'; cursor:pointer;}
+
+  .hero{
+    position:relative;
+    height:clamp(240px, 32vw, 340px);
+    overflow:hidden;
+    background:linear-gradient(180deg, #0a1712 0%, #14281b 55%, var(--forest-deep) 100%);
+    border-bottom:1px solid var(--canopy-line);
+  }
+  .hero svg.ridge{position:absolute; bottom:0; left:0; width:100%; height:auto; display:block;}
+  .hero-content{
+    position:relative; z-index:5;
+    max-width:900px; margin:0 auto; padding:clamp(36px,6vw,56px) 24px 0;
+    text-align:center;
+  }
+  .eyebrow{
+    font-family:'Spectral', serif; font-style:italic; font-weight:500;
+    letter-spacing:0.28em; text-transform:uppercase;
+    color:var(--gold); font-size:0.72rem;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before,.eyebrow::after{content:""; width:26px; height:1px; background:var(--gold); opacity:0.6;}
+  h1.title{
+    font-size:clamp(1.9rem, 5vw, 2.7rem);
+    font-weight:700; margin:14px 0 4px;
+    color:var(--ivory); letter-spacing:0.02em;
+  }
+  .title small{
+    display:block; font-family:'EB Garamond', serif; font-style:italic;
+    font-size:0.42em; color:var(--gold-bright); font-weight:500; margin-top:6px;
+  }
+  .subtitle{color:var(--text-soft); font-size:0.92rem; max-width:480px; margin:10px auto 0;}
+
+  .dash-wrap{max-width:900px; margin:-28px auto 0; padding:0 24px; position:relative; z-index:6;}
+  .dash-card{
+    background:var(--forest-mid); border:1px solid var(--canopy-line); border-radius:14px;
+    padding:18px 24px; box-shadow:var(--shadow);
+  }
+  .dash{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:14px;
+  }
+  .dash-item{text-align:center;}
+  .dash-num{font-family:'Spectral'; font-weight:700; font-size:1.6rem; color:var(--gold-bright); line-height:1.1;}
+  .dash-label{font-size:0.68rem; color:var(--text-dim); letter-spacing:0.04em; margin-top:4px;}
+  .progress-track{grid-column:1/-1; height:8px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden; margin-top:2px;}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-bright)); border-radius:99px; transition:width .5s ease;}
+  .unlock-note{
+    grid-column:1/-1; font-size:0.76rem; color:var(--text-dim); text-align:center;
+    border-top:1px solid var(--canopy-line); padding-top:10px; margin-top:2px;
+  }
+  .unlock-note b{color:var(--gold-bright); font-weight:600;}
+
+  .sync-bar{
+    margin-top:12px; padding-top:12px; border-top:1px solid var(--canopy-line);
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  #sync-status{font-size:0.76rem; color:var(--text-dim);}
+  .sync-btn{
+    background:transparent; border:1px solid var(--gold); border-radius:8px;
+    color:var(--gold-bright); font-size:0.8rem; padding:9px 16px; min-height:40px;
+    transition:background .2s, color .2s;
+  }
+  .sync-btn:hover{background:rgba(207,159,63,0.1);}
+  .sync-btn.synced{border-color:var(--gold-bright); background:rgba(207,159,63,0.12); color:var(--ivory);}
+
+  /* Day navigator */
+  .day-nav-wrap{max-width:900px; margin:22px auto 0; padding:0 24px;}
+  .day-nav{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:var(--forest-mid); border:1px solid var(--canopy-line); border-radius:12px;
+    padding:10px 14px;
+  }
+  .day-nav-btn{
+    display:flex; align-items:center; gap:6px;
+    background:transparent; border:1px solid var(--canopy-line); border-radius:8px;
+    color:var(--text-soft); font-size:0.82rem; padding:9px 14px;
+    min-height:44px; transition:border-color .2s, color .2s;
+  }
+  .day-nav-btn svg{width:16px; height:16px;}
+  .day-nav-btn:not(:disabled):hover{border-color:var(--gold-bright); color:var(--ivory);}
+  .day-nav-btn:disabled{opacity:0.3; cursor:not-allowed;}
+  .day-nav-label{
+    text-align:center; font-family:'Spectral'; font-style:italic; color:var(--ivory); font-size:0.92rem;
+  }
+  .day-nav-label span{display:block; font-size:0.68rem; color:var(--text-dim); font-style:normal; margin-top:2px;}
+
+  /* Search */
+  .search-wrap{max-width:900px; margin:16px auto 0; padding:0 24px;}
+  .search-box{
+    width:100%; background:var(--forest-mid); border:1px solid var(--canopy-line);
+    border-radius:10px; padding:12px 16px; color:var(--mist); font-family:'LXGW WenKai TC';
+    font-size:0.95rem; outline:none; transition:border-color .2s;
+  }
+  .search-box::placeholder{color:var(--text-dim);}
+  .search-box:focus{border-color:var(--gold-bright);}
+
+  .grid-wrap{max-width:1080px; margin:0 auto; padding:26px 24px 20px;}
+  .section-label{
+    font-family:'Spectral'; font-style:italic; color:var(--text-dim); font-size:0.85rem;
+    margin:0 0 14px; padding-bottom:8px; border-bottom:1px solid var(--canopy-line);
+  }
+  .card-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:16px;
+  }
+
+  .flashcard{ perspective:1200px; height:320px; }
+  .flashcard-inner{
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,.2,.2,1);
+  }
+  .flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+  .card-face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:14px; border:1px solid var(--canopy-line);
+    padding:22px 20px; display:flex; flex-direction:column;
+  }
+  .card-front{
+    background:linear-gradient(155deg, var(--forest-mid), var(--canopy));
+    justify-content:space-between;
+  }
+  .card-front .names{flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;}
+  .card-front .zh{font-family:'Spectral'; font-size:1.7rem; font-weight:700; color:var(--ivory); line-height:1.3;}
+  .card-front .en{font-size:1.08rem; color:var(--text-soft); font-weight:600;}
+  .card-front .sci{font-size:1rem;}
+  .card-actions{display:flex; gap:8px; margin-top:16px;}
+  .card-btn{
+    flex:1; border:1px solid var(--canopy-line); border-radius:8px; background:rgba(255,255,255,0.02);
+    color:var(--text-soft); font-size:0.86rem; padding:10px 6px; text-align:center;
+    min-height:44px; display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, background .2s, color .2s;
+  }
+  .card-btn:hover{border-color:var(--gold-bright); color:var(--ivory);}
+  .card-btn.learn-btn.learned{
+    background:linear-gradient(120deg, var(--gold), var(--gold-bright));
+    color:#241804; border-color:var(--gold-bright); font-weight:600;
+  }
+  .stamp{
+    position:absolute; top:10px; right:10px; width:52px; height:52px; border-radius:50%;
+    border:2px solid var(--gold-bright); color:var(--gold-bright);
+    display:none; align-items:center; justify-content:center; text-align:center;
+    font-size:0.68rem; line-height:1.2; letter-spacing:0.02em; transform:rotate(8deg);
+    background:rgba(207,159,63,0.08);
+  }
+  .flashcard.learned .stamp{display:flex;}
+
+  .card-back{ background:var(--forest-mid); justify-content:space-between; transform:rotateY(180deg); }
+  .card-back .zh-b{font-family:'Spectral'; font-size:1.35rem; font-weight:700; color:var(--ivory);}
+  .card-back .en-b{font-size:0.98rem; color:var(--text-soft); margin-top:4px;}
+  .card-back .sci-b{font-size:1rem; margin-top:4px; display:block;}
+  .card-back .meta{font-size:0.86rem; color:var(--text-dim); margin-top:14px; line-height:1.7;}
+  .ebird-link{
+    display:flex; align-items:center; gap:6px; justify-content:center;
+    font-size:0.86rem; color:var(--gold-bright); text-decoration:none;
+    border:1px solid var(--canopy-line); border-radius:8px; padding:10px 10px;
+    transition:border-color .2s, background .2s; min-height:44px;
+  }
+  .ebird-link:hover{border-color:var(--gold-bright); background:rgba(207,159,63,0.08);}
+
+  .no-results{ text-align:center; color:var(--text-dim); padding:30px 0; font-size:0.9rem; }
+
+  .locked-block{max-width:1080px; margin:8px auto 0; padding:0 24px 40px;}
+  .locked-card{
+    display:flex; align-items:center; gap:16px;
+    background:rgba(255,255,255,0.02); border:1px dashed var(--canopy-line); border-radius:12px;
+    padding:18px 22px; color:var(--text-dim); font-size:0.84rem;
+  }
+  .locked-card svg{width:24px; height:24px; flex-shrink:0; color:var(--lock-gray);}
+
+  footer{
+    text-align:center; color:var(--text-dim); font-size:0.78rem;
+    padding:20px 24px 50px; border-top:1px solid var(--canopy-line);
+  }
+  footer .latin{color:var(--gold);}
+
+  @media (prefers-reduced-motion: reduce){ .flashcard-inner{transition:none;} }
+  @media (max-width:520px){
+    .day-nav{flex-wrap:wrap;}
+    .day-nav-label{order:-1; flex-basis:100%;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <span class="eyebrow">Thailand · Khao Yai National Park</span>
+    <h1 class="title">考艾鳥類全名錄<small>231 Species · 2026年4/1–7/26</small></h1>
+    <p class="subtitle">整座考艾就是一個大教室——每天認識 6 種鳥，可以用上一頁 / 下一頁回顧任何一天學過的鳥種。</p>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 180" preserveAspectRatio="none">
+    <polygon points="0,180 0,120 220,80 480,125 760,50 1020,110 1260,70 1440,100 1440,180" fill="#152b1e" opacity="0.9"/>
+    <polygon points="0,180 0,140 260,100 560,145 860,90 1140,135 1440,110 1440,180" fill="#0c1c14"/>
+  </svg>
+</div>
+
+<div class="dash-wrap">
+  <div class="dash-card">
+    <div class="dash" id="dash"></div>
+    <div class="sync-bar" id="sync-bar">
+      <span id="sync-status">尚未登入，進度只存在這台裝置</span>
+      <button class="sync-btn" id="sync-btn">使用 Google 帳號同步</button>
+    </div>
+  </div>
+</div>
+
+<div class="day-nav-wrap">
+  <div class="day-nav">
+    <button class="day-nav-btn" id="prev-day-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      前一天
+    </button>
+    <div class="day-nav-label" id="day-nav-label"></div>
+    <button class="day-nav-btn" id="next-day-btn">
+      後一天
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input type="text" class="search-box" id="search-box" placeholder="搜尋鳥名（中文、英文或學名）— 搜尋會顯示所有已解鎖範圍內符合的鳥種">
+</div>
+
+<div class="grid-wrap">
+  <div class="section-label" id="unlocked-label"></div>
+  <div class="card-grid" id="card-grid"></div>
+  <div class="no-results" id="no-results" style="display:none;">沒有符合的鳥種</div>
+</div>
+
+<div class="locked-block" id="locked-block"></div>
+
+<footer>
+  野島方舟 <span class="latin">Wildisle Ark</span> · 學習進度會自動儲存在此裝置的瀏覽器中
+</footer>
+
+<script>
+const SPECIES = [{"zh":"褐翅鴉鵑","en":"Greater Coucal","latin":"Centropus sinensis","date":"2026-07-25","observer":"Olive Ye","count":"1","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Greater%20Coucal%20ebird"},{"zh":"小雨燕","en":"House Swift","latin":"Apus nipalensis","date":"2026-07-25","observer":"Olive Ye","count":"4","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=House%20Swift%20ebird"},{"zh":"冠斑犀鳥","en":"Oriental Pied-Hornbill","latin":"Anthracoceros albirostris","date":"2026-07-25","observer":"Olive Ye","count":"3","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Oriental%20Pied-Hornbill%20ebird"},{"zh":"白喉犀鳥","en":"Wreathed Hornbill","latin":"Rhyticeros undulatus","date":"2026-07-25","observer":"Olive Ye","count":"4","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Wreathed%20Hornbill%20ebird"},{"zh":"灰燕鵙","en":"Ashy Woodswallow","latin":"Artamus fuscus","date":"2026-07-25","observer":"Olive Ye","count":"2","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Ashy%20Woodswallow%20ebird"},{"zh":"黃頭扇尾鶯","en":"Golden-headed Cisticola","latin":"Cisticola exilis","date":"2026-07-25","observer":"Olive Ye","count":"3","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Golden-headed%20Cisticola%20ebird"},{"zh":"走鵑地鵑","en":"Coral-billed Ground-Cuckoo","latin":"Carpococcyx renauldi","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Coral-billed%20Ground-Cuckoo%20ebird"},{"zh":"綠嘴地鵑","en":"Green-billed Malkoha","latin":"Phaenicophaeus tristis","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Green-billed%20Malkoha%20ebird"},{"zh":"褐背針尾雨燕","en":"Brown-backed Needletail","latin":"Hirundapus giganteus","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"7","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Brown-backed%20Needletail%20ebird"},{"zh":"花冠皺盔犀鳥","en":"Great Hornbill","latin":"Buceros bicornis","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Great%20Hornbill%20ebird"},{"zh":"佛法僧","en":"Oriental Dollarbird","latin":"Eurystomus orientalis","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"2","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Oriental%20Dollarbird%20ebird"},{"zh":"紋啄木鳥","en":"Laced Woodpecker","latin":"Picus vittatus","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Laced%20Woodpecker%20ebird"},{"zh":"白喉鵯","en":"Puff-throated Bulbul","latin":"Alophoixus pallidus","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Puff-throated%20Bulbul%20ebird"},{"zh":"條紋喉鵯","en":"Stripe-throated Bulbul","latin":"Pycnonotus finlaysoni","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Stripe-throated%20Bulbul%20ebird"},{"zh":"亞洲仙藍鵯","en":"Asian Fairy-bluebird","latin":"Irena puella","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Asian%20Fairy-bluebird%20ebird"},{"zh":"藍耳擬啄木鳥","en":"Blue-eared Barbet","latin":"Psilopogon australis","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"5","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Blue-eared%20Barbet%20ebird"},{"zh":"斑翅椋鵙","en":"Bar-winged Flycatcher-shrike","latin":"Hemipus picatus","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"3","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Bar-winged%20Flycatcher-shrike%20ebird"},{"zh":"絲絨額鳾","en":"Velvet-fronted Nuthatch","latin":"Sitta frontalis","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"4","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Velvet-fronted%20Nuthatch%20ebird"},{"zh":"黑喉太陽鳥","en":"Black-throated Sunbird","latin":"Aethopyga saturata","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"3","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Black-throated%20Sunbird%20ebird"},{"zh":"藍翅葉鵯","en":"Blue-winged Leafbird","latin":"Chloropsis cochinchinensis","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"2","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Blue-winged%20Leafbird%20ebird"},{"zh":"綠腳山鷓鴣","en":"Scaly-breasted Partridge","latin":"Tropicoperdix chloropus","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Scaly-breasted%20Partridge%20ebird"},{"zh":"小鸕鶿","en":"Little Cormorant","latin":"Microcarbo niger","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Little%20Cormorant%20ebird"},{"zh":"大金背啄木鳥","en":"Greater Flameback","latin":"Chrysocolaptes guttacristatus","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Greater%20Flameback%20ebird"},{"zh":"綠啄花","en":"Plain Flowerpecker","latin":"Dicaeum concolor","date":"2026-07-25","observer":"Tanawan Leeboonngam","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Plain%20Flowerpecker%20ebird"},{"zh":"巨嘴鴉","en":"Large-billed Crow","latin":"Corvus macrorhynchos","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"2","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=Large-billed%20Crow%20ebird"},{"zh":"長尾縫葉鶯","en":"Common Tailorbird","latin":"Orthotomus sutorius","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"1","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=Common%20Tailorbird%20ebird"},{"zh":"黑喉縫葉鶯","en":"Dark-necked Tailorbird","latin":"Orthotomus atrogularis","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"1","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=Dark-necked%20Tailorbird%20ebird"},{"zh":"灰眼鵯","en":"Gray-eyed Bulbul","latin":"Iole propinqua","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"2","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=Gray-eyed%20Bulbul%20ebird"},{"zh":"黑冠黃鵯","en":"Black-crested Bulbul","latin":"Rubigula flaviventris","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"3","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=Black-crested%20Bulbul%20ebird"},{"zh":"白腰鵲鴝","en":"White-rumped Shama","latin":"Copsychus malabaricus","date":"2026-07-25","observer":"Teerawee khambunkerd","count":"1","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=White-rumped%20Shama%20ebird"},{"zh":"暹羅長尾雉","en":"Siamese Fireback","latin":"Lophura diardi","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Siamese%20Fireback%20ebird"},{"zh":"紅原雞","en":"Red Junglefowl","latin":"Gallus gallus","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Red%20Junglefowl%20ebird"},{"zh":"翠翼鳩","en":"Common Emerald Dove","latin":"Chalcophaps indica","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Common%20Emerald%20Dove%20ebird"},{"zh":"山皇鳩","en":"Mountain Imperial-Pigeon","latin":"Ducula badia","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Mountain%20Imperial-Pigeon%20ebird"},{"zh":"棕櫚雨燕","en":"Asian Palm Swift","latin":"Cypsiurus balasiensis","date":"2026-07-25","observer":"Hanan Jacoby","count":"5","loc":"km 33 Trail","url":"https://www.google.com/search?q=Asian%20Palm%20Swift%20ebird"},{"zh":"松雀鷹","en":"Besra","latin":"Accipiter virgatus","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Besra%20ebird"},{"zh":"橙胸咬鵑","en":"Orange-breasted Trogon","latin":"Harpactes oreskios","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Orange-breasted%20Trogon%20ebird"},{"zh":"紅頭咬鵑","en":"Red-headed Trogon","latin":"Harpactes erythrocephalus","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Red-headed%20Trogon%20ebird"},{"zh":"銅匠擬啄木鳥","en":"Coppersmith Barbet","latin":"Psilopogon haemacephalus","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Coppersmith%20Barbet%20ebird"},{"zh":"髭擬啄木鳥","en":"Moustached Barbet","latin":"Psilopogon incognitus","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Moustached%20Barbet%20ebird"},{"zh":"灰啄木鳥","en":"Great Slaty Woodpecker","latin":"Mulleripicus pulverulentus","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Great%20Slaty%20Woodpecker%20ebird"},{"zh":"大卷尾","en":"Black Drongo","latin":"Dicrurus macrocercus","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Black%20Drongo%20ebird"},{"zh":"髮冠卷尾","en":"Hair-crested Drongo","latin":"Dicrurus hottentottus","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Hair-crested%20Drongo%20ebird"},{"zh":"大盤尾","en":"Greater Racket-tailed Drongo","latin":"Dicrurus paradiseus","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Greater%20Racket-tailed%20Drongo%20ebird"},{"zh":"淡黃腰繡眼","en":"Hume's White-eye","latin":"Zosterops auriventer","date":"2026-07-25","observer":"Hanan Jacoby","count":"5","loc":"km 33 Trail","url":"https://www.google.com/search?q=Hume%27s%20White-eye%20ebird"},{"zh":"白眉彎嘴鶥","en":"White-browed Scimitar-Babbler","latin":"Pomatorhinus schisticeps","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=White-browed%20Scimitar-Babbler%20ebird"},{"zh":"純色鶥","en":"Puff-throated Babbler","latin":"Pellorneum ruficeps","date":"2026-07-25","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Puff-throated%20Babbler%20ebird"},{"zh":"小黑領噪鶥","en":"Lesser Necklaced Laughingthrush","latin":"Garrulax monileger","date":"2026-07-25","observer":"Hanan Jacoby","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Lesser%20Necklaced%20Laughingthrush%20ebird"},{"zh":"白冠噪鶥","en":"White-crested Laughingthrush","latin":"Garrulax leucolophus","date":"2026-07-25","observer":"Hanan Jacoby","count":"4","loc":"km 33 Trail","url":"https://www.google.com/search?q=White-crested%20Laughingthrush%20ebird"},{"zh":"紅鳩","en":"Red Collared-Dove","latin":"Streptopelia tranquebarica","date":"2026-07-24","observer":"Achira Vanitpisitpun","count":"3","loc":"Thames Valley Khao Yai","url":"https://www.google.com/search?q=Red%20Collared-Dove%20ebird"},{"zh":"綠鵙","en":"Common Iora","latin":"Aegithina tiphia","date":"2026-07-24","observer":"Achira Vanitpisitpun","count":"1","loc":"Thames Valley Khao Yai","url":"https://www.google.com/search?q=Common%20Iora%20ebird"},{"zh":"亞洲鉗嘴鸛","en":"Asian Openbill","latin":"Anastomus oscitans","date":"2026-07-24","observer":"Piyawat Khodkham","count":"7","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Asian%20Openbill%20ebird"},{"zh":"東方蛇鵜","en":"Oriental Darter","latin":"Anhinga melanogaster","date":"2026-07-24","observer":"Piyawat Khodkham","count":"3","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Oriental%20Darter%20ebird"},{"zh":"黃頭鷺","en":"Eastern Cattle Egret","latin":"Bubulcus coromandus","date":"2026-07-24","observer":"Piyawat Khodkham","count":"5","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Eastern%20Cattle%20Egret%20ebird"},{"zh":"藍耳翠鳥","en":"Blue-eared Kingfisher","latin":"Alcedo meninting","date":"2026-07-24","observer":"Piyawat Khodkham","count":"1","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Blue-eared%20Kingfisher%20ebird"},{"zh":"珠頸斑鳩","en":"Spotted Dove","latin":"Spilopelia chinensis","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Spotted%20Dove%20ebird"},{"zh":"斑尾鵑鳩","en":"Little Cuckoo-Dove","latin":"Macropygia ruficeps","date":"2026-07-24","observer":"Gaell Mainguy","count":"2","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Little%20Cuckoo-Dove%20ebird"},{"zh":"鵂鶹","en":"Collared Owlet","latin":"Glaucidium brodiei","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Collared%20Owlet%20ebird"},{"zh":"綠耳擬啄木鳥","en":"Green-eared Barbet","latin":"Psilopogon faiostrictus","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Green-eared%20Barbet%20ebird"},{"zh":"褐頭鷦鶯","en":"Plain Prinia","latin":"Prinia inornata","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Plain%20Prinia%20ebird"},{"zh":"黃臀鵯","en":"Yellow-vented Bulbul","latin":"Pycnonotus goiavier","date":"2026-07-24","observer":"Gaell Mainguy","count":"2","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Yellow-vented%20Bulbul%20ebird"},{"zh":"赤鷦鶯","en":"Rufescent Prinia","latin":"Prinia rufescens","date":"2026-07-24","observer":"Hanan Jacoby","count":"3","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Rufescent%20Prinia%20ebird"},{"zh":"白冠燕尾","en":"White-crowned Forktail","latin":"Enicurus leschenaulti","date":"2026-07-24","observer":"Hanan Jacoby","count":"2","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=White-crowned%20Forktail%20ebird"},{"zh":"東方蜂鷹","en":"Oriental Honey-buzzard","latin":"Pernis ptilorhynchus","date":"2026-07-24","observer":"Christopher Adler","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Oriental%20Honey-buzzard%20ebird"},{"zh":"綠鵲","en":"Common Green-Magpie","latin":"Cissa chinensis","date":"2026-07-24","observer":"Hanan Jacoby","count":"2","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Common%20Green-Magpie%20ebird"},{"zh":"柬埔寨啄花鳥","en":"Cambodian Flowerpecker","latin":"Dicaeum cambodianum","date":"2026-07-24","observer":"Hanan Jacoby","count":"2","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Cambodian%20Flowerpecker%20ebird"},{"zh":"肉垂麥雞","en":"Red-wattled Lapwing","latin":"Vanellus indicus","date":"2026-07-24","observer":"Gaell Mainguy","count":"4","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Red-wattled%20Lapwing%20ebird"},{"zh":"磯鷸","en":"Common Sandpiper","latin":"Actitis hypoleucos","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Common%20Sandpiper%20ebird"},{"zh":"小黃冠啄木鳥","en":"Lesser Yellownape","latin":"Picus chlorolophus","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Lesser%20Yellownape%20ebird"},{"zh":"綠畫眉","en":"Puff-throated Bulbul","latin":"Alophoixus pallidus","date":"2026-07-24","observer":"Gaell Mainguy","count":"1","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Puff-throated%20Bulbul%20ebird"},{"zh":"心斑啄木鳥","en":"Heart-spotted Woodpecker","latin":"Hemicircus canente","date":"2026-07-24","observer":"Christopher Adler","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Heart-spotted%20Woodpecker%20ebird"},{"zh":"長尾闊嘴鳥","en":"Long-tailed Broadbill","latin":"Psarisomus dalhousiae","date":"2026-07-24","observer":"Christopher Adler","count":"4","loc":"km 33 Trail","url":"https://www.google.com/search?q=Long-tailed%20Broadbill%20ebird"},{"zh":"厚嘴綠鳩","en":"Thick-billed Pigeon","latin":"Treron curvirostra","date":"2026-07-24","observer":"Hanan Jacoby","count":"5","loc":"km 33 Trail","url":"https://www.google.com/search?q=Thick-billed%20Pigeon%20ebird"},{"zh":"斑翡翠","en":"Banded Kingfisher","latin":"Lacedo pulchella","date":"2026-07-24","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Banded%20Kingfisher%20ebird"},{"zh":"青綠短尾鸚鵡","en":"Vernal Hanging-Parrot","latin":"Loriculus vernalis","date":"2026-07-24","observer":"Hanan Jacoby","count":"3","loc":"km 33 Trail","url":"https://www.google.com/search?q=Vernal%20Hanging-Parrot%20ebird"},{"zh":"盤尾樹鵲","en":"Racket-tailed Treepie","latin":"Crypsirina temia","date":"2026-07-24","observer":"Hanan Jacoby","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Racket-tailed%20Treepie%20ebird"},{"zh":"白喉紅臀鵯","en":"Sooty-headed Bulbul","latin":"Pycnonotus aurigaster","date":"2026-07-23","observer":"Hanan Jacoby","count":"2","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Sooty-headed%20Bulbul%20ebird"},{"zh":"稻田鷚","en":"Paddyfield Pipit","latin":"Anthus rufulus","date":"2026-07-23","observer":"Gaell Mainguy","count":"1","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Paddyfield%20Pipit%20ebird"},{"zh":"藍鬚夜蜂虎","en":"Blue-bearded Bee-eater","latin":"Nyctyornis athertoni","date":"2026-07-23","observer":"Christopher Adler","count":"1","loc":"Haew Suwat Waterfall","url":"https://www.google.com/search?q=Blue-bearded%20Bee-eater%20ebird"},{"zh":"白斑紫嘯鶇","en":"Blue Whistling-Thrush","latin":"Myophonus caeruleus","date":"2026-07-23","observer":"Christopher Adler","count":"2","loc":"Haew Suwat Waterfall","url":"https://www.google.com/search?q=Blue%20Whistling-Thrush%20ebird"},{"zh":"闊嘴鶥","en":"Abbott's Babbler","latin":"Malacocincla abbotti","date":"2026-07-23","observer":"Christopher Adler","count":"2","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Abbott%27s%20Babbler%20ebird"},{"zh":"厚嘴啄花鳥","en":"Thick-billed Flowerpecker","latin":"Dicaeum agile","date":"2026-07-23","observer":"Christopher Adler","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Thick-billed%20Flowerpecker%20ebird"},{"zh":"黃臀啄花鳥","en":"Yellow-vented Flowerpecker","latin":"Dicaeum chrysorrheum","date":"2026-07-23","observer":"Christopher Adler","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Yellow-vented%20Flowerpecker%20ebird"},{"zh":"棕胸山鶉","en":"Rain Quail","latin":"Coturnix coromandelica","date":"2026-07-23","observer":"Gaell Mainguy","count":"2","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Rain%20Quail%20ebird"},{"zh":"白燕窩金絲燕","en":"Edible-nest Swiftlet","latin":"Aerodramus fuciphagus","date":"2026-07-23","observer":"Gaell Mainguy","count":"4","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Edible-nest%20Swiftlet%20ebird"},{"zh":"白腹秧雞","en":"White-breasted Waterhen","latin":"Amaurornis phoenicurus","date":"2026-07-23","observer":"Gaell Mainguy","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=White-breasted%20Waterhen%20ebird"},{"zh":"赤紅山椒鳥","en":"Scarlet Minivet","latin":"Pericrocotus speciosus","date":"2026-07-23","observer":"Gaell Mainguy","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Scarlet%20Minivet%20ebird"},{"zh":"冠山雀","en":"Sultan Tit","latin":"Melanochlora sultanea","date":"2026-07-23","observer":"Gaell Mainguy","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Sultan%20Tit%20ebird"},{"zh":"縱耳鵯","en":"Streak-eared Bulbul","latin":"Pycnonotus blanfordi","date":"2026-07-23","observer":"Gaell Mainguy","count":"2","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Streak-eared%20Bulbul%20ebird"},{"zh":"斑文鳥","en":"Scaly-breasted Munia","latin":"Lonchura punctulata","date":"2026-07-23","observer":"Gaell Mainguy","count":"2","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Scaly-breasted%20Munia%20ebird"},{"zh":"縱紋山鷦鶯","en":"Pin-striped Tit-Babbler","latin":"Mixornis gularis","date":"2026-07-22","observer":"Christopher Adler","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Pin-striped%20Tit-Babbler%20ebird"},{"zh":"噪鵑","en":"Asian Koel","latin":"Eudynamys scolopaceus","date":"2026-07-21","observer":"Christopher Adler","count":"1","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Asian%20Koel%20ebird"},{"zh":"斑頭鵂鶹","en":"Asian Barred Owlet","latin":"Glaucidium cuculoides","date":"2026-07-21","observer":"Christopher Adler","count":"1","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Asian%20Barred%20Owlet%20ebird"},{"zh":"大擬啄木鳥","en":"Lineated Barbet","latin":"Psilopogon lineatus","date":"2026-07-21","observer":"Christopher Adler","count":"1","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Lineated%20Barbet%20ebird"},{"zh":"馬來鵲鴝鶲","en":"Malaysian Pied-Fantail","latin":"Rhipidura javanica","date":"2026-07-21","observer":"Christopher Adler","count":"1","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Malaysian%20Pied-Fantail%20ebird"},{"zh":"家八哥","en":"Common Myna","latin":"Acridotheres tristis","date":"2026-07-21","observer":"Christopher Adler","count":"2","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Common%20Myna%20ebird"},{"zh":"原鴿","en":"Rock Pigeon","latin":"Columba livia","date":"2026-07-21","observer":"Dale Chen","count":"4","loc":"Khai Si Sawat Resort","url":"https://www.google.com/search?q=Rock%20Pigeon%20ebird"},{"zh":"中南佛法僧","en":"Indochinese Roller","latin":"Coracias affinis","date":"2026-07-21","observer":"Dale Chen","count":"2","loc":"Khai Si Sawat Resort","url":"https://www.google.com/search?q=Indochinese%20Roller%20ebird"},{"zh":"紅胸鸚鵡","en":"Red-breasted Parakeet","latin":"Psittacula alexandri","date":"2026-07-21","observer":"Dale Chen","count":"7","loc":"Khai Si Sawat Resort","url":"https://www.google.com/search?q=Red-breasted%20Parakeet%20ebird"},{"zh":"大八哥(叢八哥)","en":"Jungle Myna","latin":"Acridotheres fuscus","date":"2026-07-21","observer":"Dale Chen","count":"1","loc":"Khai Si Sawat Resort","url":"https://www.google.com/search?q=Jungle%20Myna%20ebird"},{"zh":"黃腹花蜜鳥","en":"Olive-backed Sunbird","latin":"Cinnyris jugularis","date":"2026-07-21","observer":"Dale Chen","count":"1","loc":"Khai Si Sawat Resort","url":"https://www.google.com/search?q=Olive-backed%20Sunbird%20ebird"},{"zh":"鸛嘴翡翠","en":"Stork-billed Kingfisher","latin":"Pelargopsis capensis","date":"2026-07-21","observer":"Yunju Huang","count":"1","loc":"Mu Si Subdistrict Municipality Office","url":"https://www.google.com/search?q=Stork-billed%20Kingfisher%20ebird"},{"zh":"鵲鴝","en":"Oriental Magpie-Robin","latin":"Copsychus saularis","date":"2026-07-21","observer":"Jo-Szu Tsai","count":"2","loc":"Mu Si Subdistrict Municipality Office","url":"https://www.google.com/search?q=Oriental%20Magpie-Robin%20ebird"},{"zh":"黃腹柳鶯","en":"Yellow-bellied Warbler","latin":"Abroscopus superciliaris","date":"2026-07-21","observer":"素岑 趙","count":"1","loc":"Mu Si Subdistrict Municipality Office","url":"https://www.google.com/search?q=Yellow-bellied%20Warbler%20ebird"},{"zh":"紅背啄花鳥","en":"Scarlet-backed Flowerpecker","latin":"Dicaeum cruentatum","date":"2026-07-20","observer":"Huang Chin tsung","count":"1","loc":"Thanarat lodges","url":"https://www.google.com/search?q=Scarlet-backed%20Flowerpecker%20ebird"},{"zh":"夜鷺","en":"Black-crowned Night-Heron","latin":"Nycticorax nycticorax","date":"2026-07-20","observer":"Jo-Szu Tsai","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Black-crowned%20Night-Heron%20ebird"},{"zh":"小鸊鷉","en":"Little Grebe","latin":"Tachybaptus ruficollis","date":"2026-07-20","observer":"Jo-Szu Tsai","count":"2","loc":"Training Center","url":"https://www.google.com/search?q=Little%20Grebe%20ebird"},{"zh":"白腰文鳥","en":"White-rumped Munia","latin":"Lonchura striata","date":"2026-07-20","observer":"tanapong surangkul2","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=White-rumped%20Munia%20ebird"},{"zh":"斑馬鳩","en":"Zebra Dove","latin":"Geopelia striata","date":"2026-07-12","observer":"Nattapon Pornnumpa","count":"2","loc":"Mu Si Subdistrict Municipality Office","url":"https://www.google.com/search?q=Zebra%20Dove%20ebird"},{"zh":"斑闊嘴鳥","en":"Banded Broadbill","latin":"Eurylaimus javanicus","date":"2026-07-12","observer":"Nattapon Pornnumpa","count":"1","loc":"Haew Suwat Waterfall","url":"https://www.google.com/search?q=Banded%20Broadbill%20ebird"},{"zh":"熊鷹","en":"Mountain Hawk-Eagle","latin":"Nisaetus nipalensis","date":"2026-07-12","observer":"Nattapon Pornnumpa","count":"1","loc":"Pha Kluai Mai – Haew Suwat nature trail","url":"https://www.google.com/search?q=Mountain%20Hawk-Eagle%20ebird"},{"zh":"樹鴨","en":"Lesser Whistling-Duck","latin":"Dendrocygna javanica","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Lesser%20Whistling-Duck%20ebird"},{"zh":"番鵑","en":"Lesser Coucal","latin":"Centropus bengalensis","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Lesser%20Coucal%20ebird"},{"zh":"栗小鷺","en":"Cinnamon Bittern","latin":"Ixobrychus cinnamomeus","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Cinnamon%20Bittern%20ebird"},{"zh":"綠蜂虎","en":"Asian Green Bee-eater","latin":"Merops orientalis","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Asian%20Green%20Bee-eater%20ebird"},{"zh":"蒼翡翠","en":"Collared Kingfisher","latin":"Todiramphus chloris","date":"2026-07-11","observer":"Uthai Treesucon","count":"3","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Collared%20Kingfisher%20ebird"},{"zh":"金背啄木鳥","en":"Common Flameback","latin":"Dinopium javanense","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Common%20Flameback%20ebird"},{"zh":"藍翅八色鳥","en":"Blue-winged Pitta","latin":"Pitta moluccensis","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Blue-winged%20Pitta%20ebird"},{"zh":"中南地鷚","en":"Indochinese Bushlark","latin":"Mirafra erythrocephala","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Indochinese%20Bushlark%20ebird"},{"zh":"黑領椋鳥","en":"Black-collared Starling","latin":"Gracupica nigricollis","date":"2026-07-11","observer":"Uthai Treesucon","count":"2","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Black-collared%20Starling%20ebird"},{"zh":"暹羅斑椋鳥","en":"Siamese Pied Starling","latin":"Gracupica floweri","date":"2026-07-11","observer":"Uthai Treesucon","count":"7","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Siamese%20Pied%20Starling%20ebird"},{"zh":"褐喉太陽鳥","en":"Brown-throated Sunbird","latin":"Anthreptes malacensis","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Brown-throated%20Sunbird%20ebird"},{"zh":"黃胸織雀","en":"Baya Weaver","latin":"Ploceus philippinus","date":"2026-07-11","observer":"Uthai Treesucon","count":"1","loc":"Chulachomklao Royal Military Academy","url":"https://www.google.com/search?q=Baya%20Weaver%20ebird"},{"zh":"白鷴","en":"Silver Pheasant","latin":"Lophura nycthemera","date":"2026-07-07","observer":"Will Brooks","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Silver%20Pheasant%20ebird"},{"zh":"黃冠啄木鳥","en":"Greater Yellownape","latin":"Chrysophlegma flavinucha","date":"2026-07-07","observer":"Will Brooks","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Greater%20Yellownape%20ebird"},{"zh":"銀胸闊嘴鳥","en":"Silver-breasted Broadbill","latin":"Serilophus lunatus","date":"2026-07-07","observer":"Will Brooks","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Silver-breasted%20Broadbill%20ebird"},{"zh":"大白鷺","en":"Great Egret","latin":"Ardea alba","date":"2026-07-06","observer":"Will Brooks","count":"1","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Great%20Egret%20ebird"},{"zh":"純背麻雀","en":"Plain-backed Sparrow","latin":"Passer flaveolus","date":"2026-07-06","observer":"Will Brooks","count":"3","loc":"Sai Sorn Reservoir (Mo Singto)","url":"https://www.google.com/search?q=Plain-backed%20Sparrow%20ebird"},{"zh":"藍八色鶇","en":"Blue Pitta","latin":"Hydrornis cyaneus","date":"2026-07-06","observer":"Will Brooks","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Blue%20Pitta%20ebird"},{"zh":"金額葉鵯","en":"Golden-fronted Leafbird","latin":"Chloropsis aurifrons","date":"2026-07-06","observer":"Will Brooks","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Golden-fronted%20Leafbird%20ebird"},{"zh":"鳳頭蒼鷹","en":"Crested Goshawk","latin":"Accipiter trivirgatus","date":"2026-07-06","observer":"Will Brooks","count":"1","loc":"Pha Tabaek Waterfall & mineral lick","url":"https://www.google.com/search?q=Crested%20Goshawk%20ebird"},{"zh":"綠啄木","en":"Grey-headed Woodpecker","latin":"Picus canus","date":"2026-07-06","observer":"Bobby Wilcox","count":"2","loc":"Chao Pu Khao Khieo Shrine vicinity","url":"https://www.google.com/search?q=Grey-headed%20Woodpecker%20ebird"},{"zh":"灰胸鷦鶯","en":"Gray-breasted Prinia","latin":"Prinia hodgsonii","date":"2026-07-06","observer":"Bobby Wilcox","count":"3","loc":"Chao Pu Khao Khieo Shrine vicinity","url":"https://www.google.com/search?q=Gray-breasted%20Prinia%20ebird"},{"zh":"黑翅鳶","en":"Black-winged Kite","latin":"Elanus caeruleus","date":"2026-07-06","observer":"Will Brooks","count":"2","loc":"Chao Pu Khao Khieo Shrine vicinity","url":"https://www.google.com/search?q=Black-winged%20Kite%20ebird"},{"zh":"大冠鷲","en":"Crested Serpent-Eagle","latin":"Spilornis cheela","date":"2026-07-06","observer":"Will Brooks","count":"1","loc":"Chao Pu Khao Khieo Shrine vicinity","url":"https://www.google.com/search?q=Crested%20Serpent-Eagle%20ebird"},{"zh":"大彎嘴鶥","en":"Large Scimitar-Babbler","latin":"Erythrogenys hypoleucos","date":"2026-07-06","observer":"Will Brooks","count":"1","loc":"Chao Pu Khao Khieo Shrine vicinity","url":"https://www.google.com/search?q=Large%20Scimitar-Babbler%20ebird"},{"zh":"毛腿夜鷹","en":"Great Eared-Nightjar","latin":"Lyncornis macrotis","date":"2026-07-05","observer":"Will Brooks","count":"1","loc":"Lam Takhong campground (Nakhon Ratchasima side)","url":"https://www.google.com/search?q=Great%20Eared-Nightjar%20ebird"},{"zh":"紅頰太陽鳥","en":"Ruby-cheeked Sunbird","latin":"Chalcoparia singalensis","date":"2026-07-05","observer":"Will Brooks","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Ruby-cheeked%20Sunbird%20ebird"},{"zh":"小食蛛鳥","en":"Little Spiderhunter","latin":"Arachnothera longirostra","date":"2026-07-05","observer":"Will Brooks","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Little%20Spiderhunter%20ebird"},{"zh":"棕腹隼鵰","en":"Rufous-bellied Eagle","latin":"Lophotriorchis kienerii","date":"2026-07-05","observer":"Bobby Wilcox","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Rufous-bellied%20Eagle%20ebird"},{"zh":"黑黃啄木鳥","en":"Black-and-buff Woodpecker","latin":"Meiglyptes jugularis","date":"2026-07-05","observer":"Will Brooks","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Black-and-buff%20Woodpecker%20ebird"},{"zh":"小卷尾","en":"Bronzed Drongo","latin":"Dicrurus aeneus","date":"2026-07-05","observer":"Will Brooks","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Bronzed%20Drongo%20ebird"},{"zh":"黑枕藍鶲","en":"Black-naped Monarch","latin":"Hypothymis azurea","date":"2026-07-05","observer":"Will Brooks","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Black-naped%20Monarch%20ebird"},{"zh":"麻雀","en":"Eurasian Tree Sparrow","latin":"Passer montanus","date":"2026-07-04","observer":"Bobby Wilcox","count":"1","loc":"Hotel Des Artists vicinity","url":"https://www.google.com/search?q=Eurasian%20Tree%20Sparrow%20ebird"},{"zh":"金冠八哥","en":"Golden-crested Myna","latin":"Ampeliceps coronatus","date":"2026-07-03","observer":"Chiti Choopayak","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Golden-crested%20Myna%20ebird"},{"zh":"橙頭地鶇","en":"Orange-headed Thrush","latin":"Geokichla citrina","date":"2026-07-01","observer":"Guide Ryan","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Orange-headed%20Thrush%20ebird"},{"zh":"林鵰","en":"Black Eagle","latin":"Ictinaetus malaiensis","date":"2026-06-29","observer":"Arthur Laing","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Black%20Eagle%20ebird"},{"zh":"栗斑杜鵑","en":"Banded Bay Cuckoo","latin":"Cacomantis sonneratii","date":"2026-06-28","observer":"there 2007","count":"X","loc":"km 33 Trail","url":"https://www.google.com/search?q=Banded%20Bay%20Cuckoo%20ebird"},{"zh":"長尾夜鷹","en":"Large-tailed Nightjar","latin":"Caprimulgus macrurus","date":"2026-06-27","observer":"there 2007","count":"3","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Large-tailed%20Nightjar%20ebird"},{"zh":"八聲杜鵑","en":"Plaintive Cuckoo","latin":"Cacomantis merulinus","date":"2026-06-27","observer":"there 2007","count":"1","loc":"Haew Narok Waterfall trail","url":"https://www.google.com/search?q=Plaintive%20Cuckoo%20ebird"},{"zh":"栗鳶","en":"Brahminy Kite","latin":"Haliastur indus","date":"2026-06-27","observer":"Yejin Byun","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Brahminy%20Kite%20ebird"},{"zh":"褐林鴞","en":"Brown Wood-Owl","latin":"Strix leptogrammica","date":"2026-06-27","observer":"Yejin Byun","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Brown%20Wood-Owl%20ebird"},{"zh":"山藍仙鶲","en":"Hill Blue Flycatcher","latin":"Cyornis banyumas","date":"2026-06-27","observer":"Yejin Byun","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Hill%20Blue%20Flycatcher%20ebird"},{"zh":"褐耳鷹","en":"Shikra","latin":"Accipiter badius","date":"2026-06-27","observer":"Yejin Byun","count":"X","loc":"Wang Jampi","url":"https://www.google.com/search?q=Shikra%20ebird"},{"zh":"藍喉蜂虎","en":"Blue-throated Bee-eater","latin":"Merops viridis","date":"2026-06-27","observer":"Yejin Byun","count":"1","loc":"Wang Jampi","url":"https://www.google.com/search?q=Blue-throated%20Bee-eater%20ebird"},{"zh":"栗喉蜂虎","en":"Chestnut-headed Bee-eater","latin":"Merops leschenaulti","date":"2026-06-11","observer":"Supalerk Klanprasert","count":"1","loc":"Khao Phaeng Ma Non-hunting Area--headquarters vicinity","url":"https://www.google.com/search?q=Chestnut-headed%20Bee-eater%20ebird"},{"zh":"黑頭鵯","en":"Black-headed Bulbul","latin":"Brachypodius melanocephalos","date":"2026-06-11","observer":"Utain Pummarin","count":"3","loc":"Ban Tha Chang spring","url":"https://www.google.com/search?q=Black-headed%20Bulbul%20ebird"},{"zh":"高蹺鴴","en":"Black-winged Stilt","latin":"Himantopus himantopus","date":"2026-05-31","observer":"Nithit Didtawat","count":"2","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Black-winged%20Stilt%20ebird"},{"zh":"小白鷺","en":"Little Egret","latin":"Egretta garzetta","date":"2026-05-31","observer":"Nithit Didtawat","count":"2","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Little%20Egret%20ebird"},{"zh":"魚鷹","en":"Osprey","latin":"Pandion haliaetus","date":"2026-05-31","observer":"Nithit Didtawat","count":"1","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Osprey%20ebird"},{"zh":"紅嘴藍鵲","en":"Red-billed Blue Magpie","latin":"Urocissa erythroryncha","date":"2026-05-31","observer":"Nithit Didtawat","count":"1","loc":"Khlong Pla Kang","url":"https://www.google.com/search?q=Red-billed%20Blue%20Magpie%20ebird"},{"zh":"褐斑犀鳥","en":"Brown Hornbill","latin":"Anorrhinus austeni","date":"2026-05-30","observer":"Philip Reimers","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Brown%20Hornbill%20ebird"},{"zh":"大綠鵙","en":"Great Iora","latin":"Aegithina lafresnayei","date":"2026-05-28","observer":"Nick Martin","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Great%20Iora%20ebird"},{"zh":"灰頭鷦鶯","en":"Zitting Cisticola","latin":"Cisticola juncidis","date":"2026-05-27","observer":"Philip Reimers","count":"2","loc":"Kirimaya Resort","url":"https://www.google.com/search?q=Zitting%20Cisticola%20ebird"},{"zh":"黑闊嘴鳥","en":"Dusky Broadbill","latin":"Corydon sumatranus","date":"2026-05-23","observer":"Arthur Laing","count":"2","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Dusky%20Broadbill%20ebird"},{"zh":"棕扇尾鶯","en":"Zitting Cisticola","latin":"Cisticola juncidis","date":"2026-05-23","observer":"Arthur Laing","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Zitting%20Cisticola%20ebird"},{"zh":"灰短腳鵯","en":"Ashy Bulbul","latin":"Hemixos flavala","date":"2026-05-23","observer":"Arthur Laing","count":"1","loc":"Nong Phak Chi Watching Tower","url":"https://www.google.com/search?q=Ashy%20Bulbul%20ebird"},{"zh":"池鷺","en":"Chinese Pond-Heron","latin":"Ardeola bacchus","date":"2026-05-22","observer":"David Diller","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Chinese%20Pond-Heron%20ebird"},{"zh":"戴勝","en":"Eurasian Hoopoe","latin":"Upupa epops","date":"2026-05-16","observer":"Arnav K. Menon","count":"1","loc":"km 27.5 parking space vicinity","url":"https://www.google.com/search?q=Eurasian%20Hoopoe%20ebird"},{"zh":"點斑啄木鳥","en":"Freckle-breasted Woodpecker","latin":"Dendrocopos analis","date":"2026-05-15","observer":"Tarathip Turatam","count":"1","loc":"Khao Phaeng Ma Non-hunting Area--headquarters vicinity","url":"https://www.google.com/search?q=Freckle-breasted%20Woodpecker%20ebird"},{"zh":"爪哇池鷺","en":"Javan Pond-Heron","latin":"Ardeola speciosa","date":"2026-05-15","observer":"Kotchakorn Kankosol","count":"1","loc":"Nakhon Nayok Wildlife & Nature Education Center","url":"https://www.google.com/search?q=Javan%20Pond-Heron%20ebird"},{"zh":"亞洲金織雀","en":"Asian Golden Weaver","latin":"Ploceus hypoxanthus","date":"2026-05-15","observer":"Kotchakorn Kankosol","count":"1","loc":"Nakhon Nayok Wildlife & Nature Education Center","url":"https://www.google.com/search?q=Asian%20Golden%20Weaver%20ebird"},{"zh":"中白鷺","en":"Intermediate Egret","latin":"Ardea intermedia","date":"2026-05-12","observer":"Pipope Panitchpakdi","count":"2","loc":"Wang Bon Reservoir (Nakhon Nayok side)","url":"https://www.google.com/search?q=Intermediate%20Egret%20ebird"},{"zh":"叉尾雨燕","en":"Fork-tailed Swift","latin":"Apus pacificus","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Fork-tailed%20Swift%20ebird"},{"zh":"黑冠鵑隼","en":"Black Baza","latin":"Aviceda leuphotes","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Black%20Baza%20ebird"},{"zh":"黃嘴角鴞","en":"Mountain Scops-Owl","latin":"Otus spilocephalus","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Mountain%20Scops-Owl%20ebird"},{"zh":"褐鷹鴞","en":"Brown Boobook","latin":"Ninox scutulata","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Brown%20Boobook%20ebird"},{"zh":"黃鸝","en":"Black-naped Oriole","latin":"Oriolus chinensis","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Black-naped%20Oriole%20ebird"},{"zh":"寬嘴鶲","en":"Brown-streaked Flycatcher","latin":"Muscicapa williamsoni","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Brown-streaked%20Flycatcher%20ebird"},{"zh":"赤胸太陽鳥","en":"Crimson Sunbird","latin":"Aethopyga siparaja","date":"2026-05-05","observer":"Pitchaya Kaichid","count":"X","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Crimson%20Sunbird%20ebird"},{"zh":"領角鴞","en":"Collared Scops-Owl","latin":"Otus lettia","date":"2026-05-03","observer":"Nithit Didtawat","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Collared%20Scops-Owl%20ebird"},{"zh":"灰卷尾","en":"Ashy Drongo","latin":"Dicrurus leucophaeus","date":"2026-05-03","observer":"Nithit Didtawat","count":"1","loc":"km 33 Trail","url":"https://www.google.com/search?q=Ashy%20Drongo%20ebird"},{"zh":"灰山椒鳥","en":"Ashy Minivet","latin":"Pericrocotus divaricatus","date":"2026-05-01","observer":"Suebsawat Sawat-chuto","count":"2","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Ashy%20Minivet%20ebird"},{"zh":"黃褐漁鴞","en":"Buffy Fish-Owl","latin":"Ketupa ketupu","date":"2026-04-25","observer":"Ehud Biedermann","count":"1","loc":"Pha Kluai Mai – Haew Suwat nature trail","url":"https://www.google.com/search?q=Buffy%20Fish-Owl%20ebird"},{"zh":"紅尾伯勞","en":"Brown Shrike","latin":"Lanius cristatus","date":"2026-04-25","observer":"Ehud Biedermann","count":"1","loc":"Pha Kluai Mai – Haew Suwat nature trail","url":"https://www.google.com/search?q=Brown%20Shrike%20ebird"},{"zh":"黃眉柳鶯","en":"Yellow-browed Warbler","latin":"Phylloscopus inornatus","date":"2026-04-25","observer":"Ehud Biedermann","count":"1","loc":"Pha Kluai Mai – Haew Suwat nature trail","url":"https://www.google.com/search?q=Yellow-browed%20Warbler%20ebird"},{"zh":"灰背燕尾","en":"Slaty-backed Forktail","latin":"Enicurus schistaceus","date":"2026-04-25","observer":"Ehud Biedermann","count":"2","loc":"Pha Kluai Mai – Haew Suwat nature trail","url":"https://www.google.com/search?q=Slaty-backed%20Forktail%20ebird"},{"zh":"山鶺鴒","en":"Forest Wagtail","latin":"Dendronanthus indicus","date":"2026-04-25","observer":"Ehud Biedermann","count":"1","loc":"Pha Kluai Mai – Haew Suwat nature trail","url":"https://www.google.com/search?q=Forest%20Wagtail%20ebird"},{"zh":"印度鸕鶿","en":"Indian Cormorant","latin":"Phalacrocorax fuscicollis","date":"2026-04-24","observer":"Ronald van Coevorden","count":"1","loc":"parking space S of km 30 viewpoint","url":"https://www.google.com/search?q=Indian%20Cormorant%20ebird"},{"zh":"黑冠麻鷺","en":"Malayan Night-Heron","latin":"Gorsachius melanolophus","date":"2026-04-23","observer":"Veeradach Tamkuan","count":"1","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Malayan%20Night-Heron%20ebird"},{"zh":"烏鶲","en":"Dark-sided Flycatcher","latin":"Muscicapa sibirica","date":"2026-04-23","observer":"Veeradach Tamkuan","count":"1","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Dark-sided%20Flycatcher%20ebird"},{"zh":"楔尾綠鳩","en":"Wedge-tailed Green-Pigeon","latin":"Treron sphenurus","date":"2026-04-20","observer":"Veeradach Tamkuan","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Wedge-tailed%20Green-Pigeon%20ebird"},{"zh":"斑腹雕鴞","en":"Spot-bellied Eagle-Owl","latin":"Bubo nipalensis","date":"2026-04-18","observer":"David Petutschnig","count":"2","loc":"The Jungle House lodges","url":"https://www.google.com/search?q=Spot-bellied%20Eagle-Owl%20ebird"},{"zh":"東方毛腳燕","en":"Asian House-Martin","latin":"Delichon dasypus","date":"2026-04-18","observer":"David Petutschnig","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Asian%20House-Martin%20ebird"},{"zh":"灰背伯勞","en":"Grey-backed Shrike","latin":"Lanius tephronotus","date":"2026-04-13","observer":"Kerkwit Poompayak","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Grey-backed%20Shrike%20ebird"},{"zh":"紅喉鶲","en":"Taiga Flycatcher","latin":"Ficedula albicilla","date":"2026-04-13","observer":"Kerkwit Poompayak","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Taiga%20Flycatcher%20ebird"},{"zh":"黑翅山椒鳥","en":"Black-winged Cuckooshrike","latin":"Lalage melaschistos","date":"2026-04-13","observer":"Kerkwit Poompayak","count":"1","loc":"Nong Phak Chi","url":"https://www.google.com/search?q=Black-winged%20Cuckooshrike%20ebird"},{"zh":"東方金腰燕","en":"Red-rumped Swallow","latin":"Cecropis daurica","date":"2026-04-12","observer":"Alvaro Jaramillo","count":"8","loc":"Recall Isaan Isan Concept @ Khao Yai Resort","url":"https://www.google.com/search?q=Red-rumped%20Swallow%20ebird"},{"zh":"藍歌鴝","en":"Siberian Blue Robin","latin":"Larvivora cyane","date":"2026-04-12","observer":"Veeradach Tamkuan","count":"1","loc":"Pha Dieo Dai boardwalk","url":"https://www.google.com/search?q=Siberian%20Blue%20Robin%20ebird"},{"zh":"白喉磯鶇","en":"White-throated Rock-Thrush","latin":"Monticola gularis","date":"2026-04-12","observer":"Veeradach Tamkuan","count":"1","loc":"Pha Dieo Dai boardwalk","url":"https://www.google.com/search?q=White-throated%20Rock-Thrush%20ebird"},{"zh":"白喉針尾雨燕","en":"White-throated Needletail","latin":"Hirundapus caudacutus","date":"2026-04-11","observer":"Atiwich Kaewchum","count":"1","loc":"Nong Khing / Research & Innovation Development Center vicinity","url":"https://www.google.com/search?q=White-throated%20Needletail%20ebird"},{"zh":"灰喉針尾雨燕","en":"Silver-backed Needletail","latin":"Hirundapus cochinchinensis","date":"2026-04-11","observer":"Atiwich Kaewchum","count":"1","loc":"Nong Khing / Research & Innovation Development Center vicinity","url":"https://www.google.com/search?q=Silver-backed%20Needletail%20ebird"},{"zh":"短嘴金絲燕","en":"Himalayan Swiftlet","latin":"Aerodramus brevirostris","date":"2026-04-11","observer":"Alvaro Jaramillo","count":"2","loc":"Nong Khing / Research & Innovation Development Center vicinity","url":"https://www.google.com/search?q=Himalayan%20Swiftlet%20ebird"},{"zh":"栗喉蜂虎","en":"Chestnut-headed Bee-eater","latin":"Merops leschenaulti","date":"2026-04-11","observer":"Alvaro Jaramillo","count":"12","loc":"Nong Khing / Research & Innovation Development Center vicinity","url":"https://www.google.com/search?q=Chestnut-headed%20Bee-eater%20ebird"},{"zh":"家燕","en":"Barn Swallow","latin":"Hirundo rustica","date":"2026-04-11","observer":"Alvaro Jaramillo","count":"3","loc":"Nong Khing / Research & Innovation Development Center vicinity","url":"https://www.google.com/search?q=Barn%20Swallow%20ebird"},{"zh":"褐頭八色鶇","en":"Eared Pitta","latin":"Hydrornis phayrei","date":"2026-04-11","observer":"Atiwich Kaewchum","count":"2","loc":"km 33 Trail","url":"https://www.google.com/search?q=Eared%20Pitta%20ebird"},{"zh":"翠鳥","en":"Common Kingfisher","latin":"Alcedo atthis","date":"2026-04-11","observer":"Atiwich Kaewchum","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Common%20Kingfisher%20ebird"},{"zh":"白眉鶲","en":"Ferruginous Flycatcher","latin":"Muscicapa ferruginea","date":"2026-04-11","observer":"Atiwich Kaewchum","count":"1","loc":"Pha Kluai Mai","url":"https://www.google.com/search?q=Ferruginous%20Flycatcher%20ebird"},{"zh":"黑喉鴝","en":"Siberian Stonechat","latin":"Saxicola maurus","date":"2026-04-10","observer":"David Petutschnig","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Siberian%20Stonechat%20ebird"},{"zh":"褐漁鴞","en":"Brown Fish-Owl","latin":"Ketupa zeylonensis","date":"2026-04-09","observer":"Veeradach Tamkuan","count":"1","loc":"Thung Kwang Viewpoint","url":"https://www.google.com/search?q=Brown%20Fish-Owl%20ebird"},{"zh":"普通夜鷹","en":"Grey Nightjar","latin":"Caprimulgus jotaka","date":"2026-04-09","observer":"Sergey Gidon","count":"1","loc":"Thanarat lodges","url":"https://www.google.com/search?q=Grey%20Nightjar%20ebird"},{"zh":"棕翅鵟","en":"Rufous-winged Buzzard","latin":"Butastur liventer","date":"2026-04-08","observer":"重融 黃","count":"2","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Rufous-winged%20Buzzard%20ebird"},{"zh":"淡腳柳鶯","en":"Pale-legged Leaf Warbler","latin":"Phylloscopus tenellipes","date":"2026-04-08","observer":"Kenneth Lam","count":"1","loc":"考艾園區一般範圍","url":"https://www.google.com/search?q=Pale-legged%20Leaf%20Warbler%20ebird"},{"zh":"東方鵟","en":"Eastern Buzzard","latin":"Buteo japonicus","date":"2026-04-06","observer":"Teerawee khambunkerd","count":"1","loc":"Pha Trom Jai Viewpoint & Air Force Base vicinity","url":"https://www.google.com/search?q=Eastern%20Buzzard%20ebird"},{"zh":"東方澤鵟","en":"Eastern Marsh-Harrier","latin":"Circus spilonotus","date":"2026-04-06","observer":"Chris Barnes","count":"1","loc":"Khao Yai Nature Life & Tours Resort","url":"https://www.google.com/search?q=Eastern%20Marsh-Harrier%20ebird"},{"zh":"花澤鵟","en":"Pied Harrier","latin":"Circus melanoleucos","date":"2026-04-06","observer":"Chris Barnes","count":"1","loc":"Khao Yai Nature Life & Tours Resort","url":"https://www.google.com/search?q=Pied%20Harrier%20ebird"},{"zh":"白斑黑石䳭","en":"Siberian Stonechat","latin":"Saxicola maurus","date":"2026-04-05","observer":"Chris Barnes","count":"3","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Siberian%20Stonechat%20ebird"},{"zh":"冠郭公","en":"Large Hawk-Cuckoo","latin":"Hierococcyx sparverioides","date":"2026-04-03","observer":"He Ji-geng","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Large%20Hawk-Cuckoo%20ebird"},{"zh":"小灰山椒鳥","en":"Small Minivet","latin":"Pericrocotus cinnamomeus","date":"2026-04-03","observer":"He Ji-geng","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Small%20Minivet%20ebird"},{"zh":"雙斑綠柳鶯","en":"Two-barred Warbler","latin":"Phylloscopus plumbeitarsus","date":"2026-04-03","observer":"He Ji-geng","count":"2","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Two-barred%20Warbler%20ebird"},{"zh":"庫頁島柳鶯","en":"Sakhalin Leaf Warbler","latin":"Phylloscopus borealoides","date":"2026-04-03","observer":"He Ji-geng","count":"1","loc":"headquarters vicinity","url":"https://www.google.com/search?q=Sakhalin%20Leaf%20Warbler%20ebird"},{"zh":"綠簑鷺","en":"Striated Heron","latin":"Butorides striata","date":"2026-04-02","observer":"He Ji-geng","count":"1","loc":"parking space S of km 30 viewpoint","url":"https://www.google.com/search?q=Striated%20Heron%20ebird"},{"zh":"冠羽柳鶯","en":"Blyth's Leaf Warbler","latin":"Phylloscopus reguloides","date":"2026-04-02","observer":"Chris Barnes","count":"1","loc":"Khao Loi Resort","url":"https://www.google.com/search?q=Blyth%27s%20Leaf%20Warbler%20ebird"},{"zh":"中南藍仙鶲","en":"Indochinese Blue Flycatcher","latin":"Cyornis sumatrensis","date":"2026-04-02","observer":"Chris Barnes","count":"2","loc":"Khao Loi Resort","url":"https://www.google.com/search?q=Indochinese%20Blue%20Flycatcher%20ebird"},{"zh":"遊隼","en":"Peregrine Falcon","latin":"Falco peregrinus","date":"2026-04-02","observer":"Chris Barnes","count":"1","loc":"Khao Yai Nature Life & Tours Resort","url":"https://www.google.com/search?q=Peregrine%20Falcon%20ebird"},{"zh":"赤腹鷹","en":"Chinese Sparrowhawk","latin":"Accipiter soloensis","date":"2026-04-01","observer":"Chris Barnes","count":"1","loc":"Wat Tham Sila Thong (Sila Thong Cave Temple) vicinity","url":"https://www.google.com/search?q=Chinese%20Sparrowhawk%20ebird"},{"zh":"黑鳶","en":"Black Kite","latin":"Milvus migrans","date":"2026-04-01","observer":"He Ji-geng","count":"1","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Black%20Kite%20ebird"},{"zh":"栗啄木鳥","en":"Rufous Woodpecker","latin":"Micropternus brachyurus","date":"2026-04-01","observer":"He Ji-geng","count":"1","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Rufous%20Woodpecker%20ebird"},{"zh":"巨嘴柳鶯","en":"Radde's Warbler","latin":"Phylloscopus schwarzi","date":"2026-04-01","observer":"He Ji-geng","count":"1","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Radde%27s%20Warbler%20ebird"},{"zh":"克氏冠紋柳鶯","en":"Kloss's Leaf Warbler","latin":"Phylloscopus ogilviegranti","date":"2026-04-01","observer":"He Ji-geng","count":"1","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Kloss%27s%20Leaf%20Warbler%20ebird"},{"zh":"樹鷚","en":"Olive-backed Pipit","latin":"Anthus hodgsoni","date":"2026-04-01","observer":"He Ji-geng","count":"4","loc":"Khao Khieo Rd. before Chao Po Khao Khieo Shrine","url":"https://www.google.com/search?q=Olive-backed%20Pipit%20ebird"}];
+
+const LOCK_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg>`;
+const EXTERNAL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M14 4h6v6"/><path d="M20 4L10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>`;
+
+const TOTAL = SPECIES.length;
+const DAILY_RATE = 6;
+const STORAGE_KEY = 'khaoyai-full-progress';
+
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function daysBetween(a, b){
+  const da = new Date(a+'T00:00:00');
+  const db = new Date(b+'T00:00:00');
+  return Math.round((db-da)/86400000);
+}
+function loadState(){
+  let s;
+  try{ s = JSON.parse(localStorage.getItem(STORAGE_KEY)); }catch(e){ s = null; }
+  if(!s || !s.startDate){
+    s = { startDate: todayStr(), learned: {} };
+    saveState(s);
+  }
+  return s;
+}
+function saveState(s){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }catch(e){}
+}
+
+/* ===== Google Drive sync (appDataFolder) ===== */
+const GOOGLE_CLIENT_ID = '106856186819-8885pr20o9l5crrako6as8kn43tvd24q.apps.googleusercontent.com';
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
+const DRIVE_FILENAME = 'khaoyai-progress.json';
+let accessToken = null;
+let driveFileId = null;
+let tokenClient = null;
+
+function setSyncStatus(text){
+  const el = document.getElementById('sync-status');
+  if(el) el.textContent = text;
+}
+
+function mergeState(local, cloud){
+  // union of learned flags; keep the earliest startDate so unlock progress never regresses
+  const merged = { startDate: local.startDate, learned: {} };
+  if(cloud.startDate && cloud.startDate < merged.startDate) merged.startDate = cloud.startDate;
+  const allKeys = new Set([...Object.keys(local.learned||{}), ...Object.keys(cloud.learned||{})]);
+  allKeys.forEach(k=>{
+    merged.learned[k] = !!(local.learned && local.learned[k]) || !!(cloud.learned && cloud.learned[k]);
+  });
+  return merged;
+}
+
+async function driveFindFile(){
+  const res = await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id,name)&q=' + encodeURIComponent(`name='${DRIVE_FILENAME}'`), {
+    headers: { Authorization: 'Bearer ' + accessToken }
+  });
+  if(!res.ok) throw new Error('find failed: ' + res.status);
+  const data = await res.json();
+  return (data.files && data.files[0]) || null;
+}
+
+async function driveReadFile(fileId){
+  const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+    headers: { Authorization: 'Bearer ' + accessToken }
+  });
+  if(!res.ok) throw new Error('read failed: ' + res.status);
+  return res.json();
+}
+
+async function driveCreateFile(content){
+  const metadata = { name: DRIVE_FILENAME, parents: ['appDataFolder'] };
+  const boundary = '-------khaoyaiboundary';
+  const body =
+    `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n` +
+    `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(content)}\r\n--${boundary}--`;
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': `multipart/related; boundary=${boundary}` },
+    body
+  });
+  if(!res.ok) throw new Error('create failed: ' + res.status);
+  const data = await res.json();
+  return data.id;
+}
+
+async function driveUpdateFile(fileId, content){
+  const res = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+    method: 'PATCH',
+    headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify(content)
+  });
+  if(!res.ok) throw new Error('update failed: ' + res.status);
+}
+
+async function pushStateToDrive(){
+  if(!accessToken) return;
+  try{
+    if(driveFileId){
+      await driveUpdateFile(driveFileId, state);
+    } else {
+      driveFileId = await driveCreateFile(state);
+    }
+    setSyncStatus('已同步到 Google 帳號 · ' + new Date().toLocaleTimeString('zh-TW'));
+  }catch(e){
+    setSyncStatus('同步失敗，稍後會再嘗試');
+  }
+}
+
+async function onSignedIn(){
+  setSyncStatus('登入成功，讀取雲端進度中…');
+  try{
+    const existing = await driveFindFile();
+    if(existing){
+      driveFileId = existing.id;
+      const cloudState = await driveReadFile(existing.id);
+      state = mergeState(state, cloudState || {startDate: state.startDate, learned:{}});
+      saveState(state);
+      await driveUpdateFile(driveFileId, state);
+    } else {
+      driveFileId = await driveCreateFile(state);
+    }
+    setSyncStatus('已登入並同步（此裝置與雲端進度已合併）');
+    document.getElementById('sync-btn').textContent = '重新同步';
+    document.getElementById('sync-btn').classList.add('synced');
+    renderDash();
+    if(searchBox.value.trim()) renderSearch(searchBox.value.trim());
+    else renderDayView();
+  }catch(e){
+    setSyncStatus('讀取雲端進度失敗：' + e.message);
+  }
+}
+
+function initGoogleSync(){
+  if(typeof google === 'undefined' || !google.accounts){
+    setSyncStatus('Google 登入功能載入失敗，請檢查網路連線');
+    return;
+  }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: DRIVE_SCOPE,
+    callback: (resp)=>{
+      if(resp.error){ setSyncStatus('登入失敗：' + resp.error); return; }
+      accessToken = resp.access_token;
+      onSignedIn();
+    }
+  });
+  document.getElementById('sync-btn').addEventListener('click', ()=>{
+    setSyncStatus('正在開啟 Google 登入視窗…');
+    tokenClient.requestAccessToken({ prompt: accessToken ? '' : 'consent' });
+  });
+}
+
+
+let state = loadState();
+const dayIndex = Math.max(0, daysBetween(state.startDate, todayStr()));
+const currentDay = dayIndex + 1;
+const totalDays = Math.ceil(TOTAL / DAILY_RATE);
+const clampedCurrentDay = Math.min(currentDay, totalDays);
+const unlockedCount = Math.min(TOTAL, clampedCurrentDay * DAILY_RATE);
+
+let viewingDay = clampedCurrentDay;
+
+function renderDash(){
+  const learnedCount = Object.values(state.learned).filter(Boolean).length;
+  const dash = document.getElementById('dash');
+  dash.innerHTML = `
+    <div class="dash-item"><div class="dash-num">${clampedCurrentDay}</div><div class="dash-label">學習第幾天</div></div>
+    <div class="dash-item"><div class="dash-num">${unlockedCount}</div><div class="dash-label">已解鎖 / ${TOTAL}</div></div>
+    <div class="dash-item"><div class="dash-num">${learnedCount}</div><div class="dash-label">已認識 / ${TOTAL}</div></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${(unlockedCount/TOTAL*100).toFixed(1)}%"></div></div>
+    <div class="unlock-note">${unlockedCount>=TOTAL ? '全部 '+TOTAL+' 種都已解鎖，名錄完整制霸' : `每天解鎖 <b>${DAILY_RATE}</b> 種，明天 00:00 後再解鎖下一批`}</div>
+  `;
+}
+
+function birdKey(zh){ return zh; }
+function matchesSearch(sp, q){
+  if(!q) return true;
+  q = q.toLowerCase();
+  return sp.zh.includes(q) || (sp.en && sp.en.toLowerCase().includes(q)) || (sp.latin && sp.latin.toLowerCase().includes(q));
+}
+
+function cardHTML(sp, isNewToday){
+  const key = birdKey(sp.zh);
+  const learned = !!state.learned[key];
+  return `
+    <div class="flashcard ${learned?'learned':''}" data-key="${key}">
+      <div class="flashcard-inner">
+        <div class="card-face card-front">
+          <div class="stamp">已<br>認識</div>
+          <div class="names">
+            <div class="zh">${sp.zh}</div>
+            <div class="en">${sp.en}</div>
+            <div class="sci latin">${sp.latin}</div>
+          </div>
+          <div class="card-actions">
+            <button class="card-btn flip-btn">翻面看筆記 →</button>
+            <button class="card-btn learn-btn ${learned?'learned':''}">${learned?'✓ 已認識':'我認識了'}</button>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div>
+            <div class="zh-b">${sp.zh}</div>
+            <div class="en-b">${sp.en}</div>
+            <span class="sci-b latin">${sp.latin}</span>
+            <div class="meta">最近記錄：${sp.date}<br>地點：${sp.loc}<br>回報人：${sp.observer}</div>
+          </div>
+          <div class="card-actions">
+            <button class="card-btn flip-btn">← 翻回正面</button>
+            <a class="ebird-link" style="flex:1;" href="${sp.url}" target="_blank" rel="noopener noreferrer">${EXTERNAL_ICON} 查看資訊與照片</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function attachCardEvents(container){
+  container.querySelectorAll('.flashcard').forEach(card=>{
+    const key = card.dataset.key;
+    card.querySelectorAll('.flip-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=> card.classList.toggle('flipped'));
+    });
+    const learnBtn = card.querySelector('.learn-btn');
+    learnBtn.addEventListener('click', ()=>{
+      const nowLearned = !state.learned[key];
+      state.learned[key] = nowLearned;
+      saveState(state);
+      card.classList.toggle('learned', nowLearned);
+      learnBtn.classList.toggle('learned', nowLearned);
+      learnBtn.textContent = nowLearned ? '✓ 已認識' : '我認識了';
+      renderDash();
+      pushStateToDrive();
+    });
+  });
+}
+
+function renderDayView(){
+  document.getElementById('day-nav-wrap-placeholder');
+  const start = (viewingDay-1)*DAILY_RATE;
+  const daySpecies = SPECIES.slice(start, start+DAILY_RATE);
+  const grid = document.getElementById('card-grid');
+  const label = document.getElementById('unlocked-label');
+  const noResults = document.getElementById('no-results');
+  noResults.style.display = 'none';
+
+  label.textContent = viewingDay === clampedCurrentDay ? `今日 ${DAILY_RATE} 鳥（第 ${viewingDay} 天）`
+    : viewingDay > clampedCurrentDay ? `第 ${viewingDay} 天（提前預覽，尚未正式解鎖）`
+    : `第 ${viewingDay} 天回顧`;
+  grid.innerHTML = daySpecies.map(sp => cardHTML(sp, false)).join('');
+  attachCardEvents(grid);
+
+  document.getElementById('day-nav-label').innerHTML = `第 ${viewingDay} / ${totalDays} 天<span>第 ${start+1}–${start+daySpecies.length} 種</span>`;
+  document.getElementById('prev-day-btn').disabled = viewingDay <= 1;
+  document.getElementById('next-day-btn').disabled = viewingDay >= totalDays;
+}
+
+function renderSearch(query){
+  const grid = document.getElementById('card-grid');
+  const label = document.getElementById('unlocked-label');
+  const noResults = document.getElementById('no-results');
+  const unlocked = SPECIES.slice(0, unlockedCount);
+  const filtered = unlocked.filter(sp => matchesSearch(sp, query));
+  label.textContent = `搜尋結果（${filtered.length} 筆，僅限已解鎖範圍）`;
+  if(filtered.length === 0){
+    grid.innerHTML = '';
+    noResults.style.display = '';
+    return;
+  }
+  noResults.style.display = 'none';
+  grid.innerHTML = filtered.map(sp => cardHTML(sp, false)).join('');
+  attachCardEvents(grid);
+}
+
+function renderLocked(){
+  const remaining = TOTAL - unlockedCount;
+  const block = document.getElementById('locked-block');
+  if(remaining <= 0){ block.innerHTML=''; return; }
+  const daysLeft = Math.ceil(remaining / DAILY_RATE);
+  block.innerHTML = `
+    <div class="locked-card">
+      ${LOCK_ICON}
+      <div>還有 <b style="color:var(--gold-bright)">${remaining}</b> 種尚未解鎖，依每天 ${DAILY_RATE} 種的速度，約 ${daysLeft} 天後可以學完整份名錄。</div>
+    </div>
+  `;
+}
+
+const searchBox = document.getElementById('search-box');
+const dayNavWrap = document.querySelector('.day-nav-wrap');
+
+searchBox.addEventListener('input', (e)=>{
+  const q = e.target.value.trim();
+  if(q){
+    dayNavWrap.style.display = 'none';
+    renderSearch(q);
+  } else {
+    dayNavWrap.style.display = '';
+    renderDayView();
+  }
+});
+
+document.getElementById('prev-day-btn').addEventListener('click', ()=>{
+  if(viewingDay > 1){ viewingDay--; renderDayView(); }
+});
+document.getElementById('next-day-btn').addEventListener('click', ()=>{
+  if(viewingDay < totalDays){ viewingDay++; renderDayView(); }
+});
+
+renderDash();
+renderDayView();
+renderLocked();
+window.addEventListener('load', initGoogleSync);
+</script>
+</body>
+</html>
